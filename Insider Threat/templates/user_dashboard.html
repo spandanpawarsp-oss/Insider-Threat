@@ -2,67 +2,217 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=3.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.9)),
+                url('https://images.unsplash.com/photo-1535223289827-42f1e9919769');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar h1 {
+            color: #4DA3FF;
+            font-size: 20px;
+        }
+
+        .logout {
+            padding: 8px 18px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .logout:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255,0,0,0.6);
+        }
+
+        /* Container */
+        .container {
+            padding: 30px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+        .alert-success { background: rgba(0,255,0,0.2); }
+        .alert-danger { background: rgba(255,0,0,0.2); }
+        .alert-warning { background: rgba(255,165,0,0.2); }
+
+        /* Cards Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            padding: 25px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+        }
+
+        .general h2 {
+            color: #3b82f6;
+        }
+
+        .sensitive h2 {
+            color: #ef4444;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-blue {
+            background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+            color: white;
+        }
+
+        .btn-blue:hover {
+            box-shadow: 0 5px 20px rgba(59,130,246,0.6);
+            transform: scale(1.05);
+        }
+
+        .btn-red {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-red:hover {
+            box-shadow: 0 5px 20px rgba(255,0,0,0.6);
+            transform: scale(1.05);
+        }
+
+        .btn-outline {
+            border: 1px solid #60a5fa;
+            color: #60a5fa;
+        }
+
+        .btn-outline:hover {
+            background: rgba(59,130,246,0.2);
+        }
+
+    </style>
 </head>
-<body class="bg-light">
 
-    <nav class="navbar navbar-dark bg-dark px-4">
-        <span class="navbar-brand mb-0 h1">User Dashboard</span>
-        <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
-    </nav>
+<body>
 
-    <div class="container py-6">
-        <h2 class="mb-4">Welcome, {{ username }}</h2>
+<!-- Navbar -->
+<div class="navbar">
+    <h1>User Dashboard</h1>
+    <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+</div>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+<div class="container">
 
-        <div class="row">
-            <div class="col-md-15 mb-9">
-                <div class="card shadow h-100">
-                    <div class="card-body">
-                        <h1 class="card-title text-primary">General Files</h1>
-                        <p class="card-text">These files are normal and low-risk.</p>
+    <div class="welcome">Welcome, {{ username }} 👋</div>
 
-                        <div class="d-grid gap-9">
-                            <a href="{{ url_for('access_file', filename='General_Policy.pdf') }}" class="btn btn-outline-primary">
-                                Access General_Policy.pdf
-                            </a>
-                            <a href="{{ url_for('download_file', filename='General_Policy.pdf') }}" class="btn btn-primary">
-                                Download General_Policy.pdf
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-            <div class="col-md-15 mb-9">
-                <div class="card shadow h-100 border-danger">
-                    <div class="card-body">
-                        <h1 class="card-title text-danger">Sensitive Files</h1>
-                        <p class="card-text">These files are monitored more carefully.</p>
+    <div class="grid">
 
-                        <div class="d-grid gap-9">
-                            <a href="{{ url_for('access_file', filename='Salary_Data.xlsx') }}" class="btn btn-outline-warning">
-                                Access Salary_Data.xlsx
-                            </a>
-                            <a href="{{ url_for('download_file', filename='Confidential_Report.pdf') }}" class="btn btn-danger">
-                                Download Confidential_Report.pdf
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- General Files -->
+        <div class="card general">
+            <h2>📁 General Files</h2>
+            <p>These files are normal and low-risk.</p>
+
+            <a href="{{ url_for('access_file', filename='General_Policy.pdf') }}" class="btn btn-outline">
+                Access File
+            </a>
+
+            <a href="{{ url_for('download_file', filename='General_Policy.pdf') }}" class="btn btn-blue">
+                Download File
+            </a>
+        </div>
+
+        <!-- Sensitive Files -->
+        <div class="card sensitive">
+            <h2>🔒 Sensitive Files</h2>
+            <p>These files are highly monitored.</p>
+
+            <a href="{{ url_for('access_file', filename='Salary_Data.xlsx') }}" class="btn btn-outline">
+                Access File
+            </a>
+
+            <a href="{{ url_for('download_file', filename='Confidential_Report.pdf') }}" class="btn btn-red">
+                Download File
+            </a>
         </div>
 
     </div>
+
+</div>
 
 </body>
 </html>
